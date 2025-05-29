@@ -280,7 +280,7 @@ class groom_images {
 ###>-----------------------------------------------------------------------------/
 $GI = new groom_images;
 
-$dir = '/001_media/p/_cavern_/0_SeaArtAI/PacificIslandSchoolGirls/my_temp/';
+$dir = '/001_media/p/_cavern_/images';
 $GI->dir = $dir;
 $cropped_dir = $dir.'cropped/'; 
 $GI->_target_dir_($cropped_dir); 
