@@ -11,8 +11,8 @@ I use bits and pieces of code from other sources, I try to give proper credit to
 
 Whether I not their actial code is in here, I gained great knowledge and understanding from their efforts, 
 so huge thanks to these folks.
-= Huggingface
-- CivitAI
+- Huggingface [https://huggingface.co/]
+- CivitAI [https://civitai.com/]
 - MORE TO LIST -
 
 
