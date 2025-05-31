@@ -413,7 +413,7 @@ class groom_images {
 ###>-----------------------------------------------------------------------------/
 $GI = new groom_images;
 
-$dir = '/001_media/p/_cavern_/images/';
+$dir = trim(readline("Which directory contains the images? "));
 $GI->dir = $dir;
 $cropped_dir = $dir.'cropped/'; 
 $GI->_target_dir_($cropped_dir); 
