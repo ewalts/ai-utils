@@ -1,7 +1,7 @@
 #######################################################>
-###>  Ubuntu basic settings
+###>  Debian basic settings
 #######################################################>
-- name: Initial Ubuntu Server Setup Tasks
+- name: Initial Debian Server Setup Tasks
   hosts: ec2hosts
   remote_user: admin
   gather_facts: false
