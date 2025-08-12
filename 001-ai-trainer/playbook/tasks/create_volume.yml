@@ -40,11 +40,11 @@
     - debug:
         msg: "{{ ec2_vol }}"
 
-    - name: Deployment Record Update MySQL Data Volume
+    - name: Deployment Record Update Ai Data Volume
       lineinfile:
         state: present
         create: true
         path: "{{ deployment_log }}"
-        regexp: 'hf_data_vol:'
-        line: "hf_data_vol: {{ ec2_vol['volume_id'] }}"
+        regexp: 'ai_data_vol:'
+        line: "ai_data_vol: {{ ec2_vol['volume_id'] }}"
 
