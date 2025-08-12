@@ -1,0 +1,28 @@
+
+hf_links:
+  - name: peft
+    url: https://github.com/huggingface/peft.git
+  - name: accelerate
+    url: https://github.com/huggingface/accelerate.git
+  - name: safetensors
+    url: https://github.com/huggingface/safetensors.git
+  - name: transformers
+    url: https://github.com/huggingface/transformers.git
+  - name: diffusers
+    url: https://github.com/huggingface/diffusers.git
+  - name: datasets
+    url: https://github.com/huggingface/datasets.git
+  - name: notebooks
+    url: https://github.com/huggingface/notebooks.git
+  - name: optimum
+    url: https://github.com/huggingface/optimum.git
+  - name: text-generation-inference
+    url: https://github.com/huggingface/text-generation-inference.git
+  - name: trl
+    url: https://github.com/huggingface/trl.git
+      #
+      #
+      #
+      #  - name: cookbook-notebooks-en
+      #    url: https://github.com/huggingface/cookbook.git
+      #      suburl: notebooks/en

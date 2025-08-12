@@ -1,0 +1,11 @@
+###> Nvidia Cuda Repos - RichardWalts Inc.
+nvidia_dev_download_url: 'https://developer.download.nvidia.com/compute/cuda/repos/'
+nvidia_gpg: "{{ nvidia_dev_download_url }}GPGKEY"
+nvidia_deb_12: "{{ nvidia_dev_download_url }}debian12/x86_64/"
+nvidia_rhel_8: "{{ nvidia_dev_download_url }}rhel8/x86_64/"
+nvidia_rhel_9: "{{ nvidia_dev_download_url }}rhel9/x86_64/"
+nvidia_sus_422: "{{ nvidia_dev_download_url }}/opensuse422/x86_64/"
+nvidia_sus_423: "{{ nvidia_dev_download_url }}/opensuse423/x86_64/"
+nvidia_ubu_22: "{{ nvidia_dev_download_url }}/ubutnu2204/x86_64/"
+nvidia_ubu_24: "{{ nvidia_dev_download_url }}/ubutnu2404/x86_64/"
+
