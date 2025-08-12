@@ -16,13 +16,11 @@ hf_links:
     url: https://github.com/huggingface/notebooks.git
   - name: optimum
     url: https://github.com/huggingface/optimum.git
-  - name: text-generation-inference
-    url: https://github.com/huggingface/text-generation-inference.git
   - name: trl
     url: https://github.com/huggingface/trl.git
       #
-      #
-      #
+      #  - name: text-generation-inference
+      #    url: https://github.com/huggingface/text-generation-inference.git
       #  - name: cookbook-notebooks-en
       #    url: https://github.com/huggingface/cookbook.git
       #      suburl: notebooks/en

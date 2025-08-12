@@ -81,11 +81,26 @@ class groom_images {
 	    }
 	}
     }
+###>-----------------------------------------------------------------------------/
+    public function _check_extension_($f,$t){
+	$t = strtolower($t);
+	try{
+    	    if( preg_match( "/.$t/", $f))
+		return ".$t";
+	    else
+		throw new exception();
+	}catch(exception $m){
+	    if( $t == 'jpeg'){
+		if( preg_match( '/.jpg/',$f))
+		    return '.jpg';
+	    }
+	}
+    }
 
 ###>-----------------------------------------------------------------------------/
-    public function _img_dimensions_(){
-	    $this->imgX=imageSX($this->imgObj);
-	    $this->imgY=imageSY($this->imgObj);
+    public function _img_dimensions_($imgObj){
+	    $this->imgX=imageSX($imgObj);
+	    $this->imgY=imageSY($imgObj);
 	    if($this->imgX > $this->imgY)
 		$this->wide=1;
 	    else
@@ -149,38 +164,43 @@ class groom_images {
         $cur_x = $this->imgX;
 	$cur_y = $this->imgY;
 	$name = $this->imgName;
+        $this->newX = $this->targetX;
+        $this->newY = $this->targetY;
+
 	try{
 	    if($cur_x == $cur_y){
-		$this->newX = $this->targetX;
-		$this->newY = $this->targetY;
 		pass("curY=$cur_y, curX=$cur_x, newY=$this->newY, newX=$this->newX; Line=".__LINE__);
 		throw new exception('');
 	    }elseif($cur_x < $cur_y){
-		 $this->ratio = ($cur_y / $cur_x);
-		 $this->newX = $this->targetX;
-		 if($cur_x < $this->targetX){
-		     $off = ($this->targetX - $cur_x);  
-		     $this->newY = ($this->targetY + ($off * $this->ratio));
-		     pass("curY=$cur_y, curX=$cur_x, newY=$this->newY, newX=$this->newX; Line=".__LINE__);
-		 }else{
-		     $off = ($cur_x - $this->targetX);
-		     $this->newY = ($this->targetY + ($off * $this->ratio));
-		 }
-		 throw new exception('');
-	    }elseif($cur_y < $cur_x){
-                 $this->ratio = ($cur_x / $cur_y);
-                 $this->newY = $this->targetY;
-                 if($cur_y < $this->targetY){ 
-                     $off = ($this->targetY - $cur_y);  
-		     $this->newX = ($this->targetX + ($off * $this->ratio));
-		     pass("curY=$cur_y, curX=$cur_x, newY=$this->newY, newX=$this->newX; Line=".__LINE__);
-                 }else{
-                     $off = ($cur_y - $this->targetY);
-		     $this->newX = ($this->targetX + ($off * $this->ratio));
-		     pass("curY=$cur_y, curX=$cur_x, newY=$this->newY, newX=$this->newX; Line=".__LINE__);
-		 }
-		 throw new exception('');
-	    } 
+		$tmp_img = imagecreatetruecolor($cur_y,$cur_y);
+		imagefilledrectangle($tmp_img,0,0,$cur_y,$cur_y,000000);
+
+		$off = $cur_y - $cur_x;
+		$extents = $off * .5;
+		imagecopymerge($tmp_img,$this->imgObj,$extents,0,0,0,$cur_x,$cur_y,100);
+		imagedestroy($this->imgObj);
+		$this->imgObj=$tmp_img;
+//		$this->imgObj->extentImage($cur_x,$cur_y,(-$extents),0);
+//		$this->imgObj->extentImage(($extents + $cur_x),$cur_y,$extents,0);
+	    }elseif($cur_y < $cur_x){    
+		$tmp_img = imagecreatetruecolor($cur_x,$cur_x);
+		imagefilledrectangle($tmp_img,0,0,$cur_x,$cur_x,000000);
+		
+		$off = ($cur_x - $cur_y);  
+		$extents = $off * .5;
+		imagecopymerge($tmp_img,$this->imgObj,0,$extents,0,0,$cur_x,$cur_y,100);
+                imagedestroy($this->imgObj);
+                $this->imgObj=$tmp_img;
+
+//                $this->imgObj->extentImage($cur_x,$cur_y,0,(-$extents));
+//                $this->imgObj->extentImage($cur_x,($extents + $cur_y),$extents,0);
+	    }
+	    $this->_img_dimensions_($this->imgObj);
+	    $cur_y = $this->imgY;
+	    $cur_x = $this->imgX;
+	    pass("curY=$this->imgY, curX=$this->imgX, newY=$this->newY, newX=$this->newX; Line=".__LINE__);      
+	    throw new exception('');
+	 
         }catch(exception $resize){
 	    //    $this->_img_resize_($sd);
 	    pass("curY=$cur_y, curX=$cur_x, newY=$this->newY, newX=$this->newX; Line=".__LINE__);
@@ -206,13 +226,16 @@ class groom_images {
         //$this->imgFile = $this->tempFile;
         $fileObject = $this->_file_read_object_();
         $imgObject = $this->_img_object_();
-        $this->_img_dimensions_();
+        $this->_img_dimensions_($this->imgObj);
 
 	$cur_x = $this->imgX;
 	$cur_y = $this->imgY;
 	$name = $this->imgName;
 	$imgObj = $this->imgObj;
-	
+	$this->_img_resize_($sd);
+	$this->imgC = $this->img_resized;	
+	return $this->imgC;
+	/*
 	try{ // We will only crop if the image won't really change in size
             if((($cur_x < $this->targetX)&&($cur_y < $this->targetY))||
 		(($cur_y > $this->targetY)&&($cur_x > $this->targetX)))
@@ -242,16 +265,19 @@ class groom_images {
 	    $yCrop=0;
 ###>-----------------------------------------------------------------------------/
 	    //$this->imgFile = $this->tempFile;
+	 
 	    $fileObject = $this->_file_read_object_();
 	    $imgObject = $this->_img_object_();
 
-	    $this->_img_dimensions_();
+	    $this->_img_dimensions_($this->imgObj);
+	    
+
 
 	    if($this->wide == 1)
 		$xCrop = $this->cropBegin;
 	    else
 		$yCrop = $this->cropBegin;
-	    
+	  
 	    #$size = min(imagesx($this->img_resized), imagesy($this->img_resized));
 	    $imgC = imagecrop($this->imgObj, ['x' => $xCrop, 'y' => $yCrop, 
 		'width' => $this->targetX, 'height' => $this->targetY]);
@@ -260,7 +286,8 @@ class groom_images {
 		$this->imgC = $imgC;
     		return $imgC;
 	    }
-	}
+ */
+	
     }
 ###>-----------------------------------------------------------------------------/
 
@@ -369,7 +396,7 @@ class groom_images {
         	$this->_file_read_object_($dir.$img);
         	$imgObj = $this->_img_object_();
         	$Type = $this->_img_mime_type_();
-		$this->_img_dimensions_();	
+		$this->_img_dimensions_($this->imgObj);	
 		$this->_check_resolution_();
         	 ###> creating the array of information passed to create.
         	$imgA=array( 'path' => $dir, 'name' => $img, 'type' => $Type, 
