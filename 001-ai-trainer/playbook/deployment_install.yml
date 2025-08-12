@@ -34,7 +34,7 @@
     - name: Create IAM assume Role
       community.aws.iam_role:
         name: "{{ iam_role }}"
-        assume_role_policy_document: "{{ lookup('file','files/assume_iam_role.json') }}"
+        assume_role_policy_document: "{{ lookup('file','files/iam_assume_role.json') }}"
         description: Role for EC2 Instances
         state: present
         tags:
@@ -60,7 +60,7 @@
         iam_type: role
         iam_name: "{{ iam_role }}"
         policy_name: "{{ policy_name }}"
-        policy_json: "{{ lookup('file','../scripts/001-ai-trainer.json') }}"
+        policy_json: "{{ lookup('file','../scripts/iam_001-ai-trainer.json') }}"
         state: present
       register: iam_policy_info
     - debug:
